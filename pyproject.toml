@@ -25,3 +25,18 @@ coverage = "^7.0.5"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+relative_files = true
+branch = true
+# omit the tests themselves
+omit = ["*/tests/*", "*/tmp/*", "*/interface/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:"
+]
+ignore_errors = true
