@@ -56,3 +56,8 @@ def test_from_LazySequence():
 def test_from_LazySequence_err():
     with pytest.raises(TypeError):
         znslice.LazySequence.from_obj("Lorem Ipsum")
+
+
+def test_LazySequence_repr():
+    lst = znslice.LazySequence.from_obj([1, 2, 3], indices=[0, 2])
+    assert repr(lst) == "LazySequence([[1, 2, 3]], [[0, 2]])"
