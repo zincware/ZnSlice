@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/znslice.svg)](https://badge.fury.io/py/znslice)
+[![Coverage Status](https://coveralls.io/repos/github/zincware/ZnSlice/badge.svg?branch=main)](https://coveralls.io/github/zincware/ZnSlice?branch=main)
 # ZnSlice
 
 A lightweight library  (without external dependencies) for:
@@ -14,6 +16,15 @@ pip install znslice
 # Usage
 
 ## Advanced Slicing and Cache
+Convert List to `znslice.LazySequence` to allow advanced slicing.
+```python
+import znslice
+
+lst = znslice.LazySequence.from_obj([1, 2, 3], indices=[0, 2])
+print(lst[[0, 1]].tolist())  # [1, 3]
+```
+
+
 ```python
 import znslice
 import collections.abc
