@@ -5,6 +5,11 @@ import pytest
 import znslice
 
 
+def test_version():
+    """Test 'ZnTrack' version."""
+    assert znslice.__version__ == "0.1.1"
+
+
 class CacheList(collections.abc.Sequence):
     def __init__(self, data):
         self.data = data
@@ -266,7 +271,7 @@ def test_LazyCacheList_addition_sliced():
 def test_LazyCacheList_addition_error():
     lst = LazyCacheList(list(range(10)))
     with pytest.raises(TypeError):
-        lst[:] + [1, 2, 3]
+        lst[:] + (1, 2, 3)
 
 
 def test_LazyCacheListLazySingle():
@@ -276,6 +281,7 @@ def test_LazyCacheListLazySingle():
     assert len(lstc) == 10
     assert len(lstc._obj) == 2
     assert len(lstc._indices) == 2
+    assert lstc._indices == [[0, 2, 4, 6, 8], [0, 2, 4, 6, 8]]
     assert lstc[:].tolist() == list(range(0, 20, 2))
     assert lstc[::2].tolist() == [0, 4, 8, 12, 16]
     assert lstc[[9]].tolist() == [18]
@@ -285,3 +291,14 @@ def test_LazyCacheListLazySingle():
     assert list(lstc)[8].tolist() == [16]
     with pytest.raises(IndexError):
         _ = lstc[10]
+
+
+def test_iter_LazyCacheList():
+    lst = LazyCacheList(list(range(10)))
+    for i, v in enumerate(lst):
+        assert i == v
+
+
+def test_add_lists():
+    lst = LazyCacheList(list(range(10)))[:]
+    assert lst + [1, 2, 3] == list(range(10)) + [1, 2, 3]
