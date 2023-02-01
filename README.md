@@ -1,5 +1,6 @@
 [![PyPI version](https://badge.fury.io/py/znslice.svg)](https://badge.fury.io/py/znslice)
 [![Coverage Status](https://coveralls.io/repos/github/zincware/ZnSlice/badge.svg?branch=main)](https://coveralls.io/github/zincware/ZnSlice?branch=main)
+[![zincware](https://img.shields.io/badge/Powered%20by-zincware-darkcyan)](https://github.com/zincware)
 # ZnSlice
 
 A lightweight library  (without external dependencies) for:
