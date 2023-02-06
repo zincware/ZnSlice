@@ -61,6 +61,14 @@ class LazySequence(collections.abc.Sequence):
         return cls([obj], [indices], lazy_single_item=False)
 
     def __getitem__(self, item):
+        """Get item from LazySequence.
+
+        Todo ...
+        """
+        if item == -1:
+            # special case, return last entry
+            return self[len(self) - 1]
+
         indices = utils.item_to_indices(item, self)
         single_item = False
         if isinstance(indices, int):
