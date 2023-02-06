@@ -1,3 +1,4 @@
+"""The main znslice module."""
 import collections.abc
 import functools
 import logging
@@ -13,6 +14,7 @@ class Reset:
     """Reset the cache for the given items."""
 
     def __init__(self, item):
+        """Initialize the Reset object."""
         self.item = item
 
 
@@ -25,6 +27,10 @@ class LazySequence(collections.abc.Sequence):
         indices: typing.List[typing.Union[list, int]],
         lazy_single_item: bool = False,
     ):
+        """Initialize the LazySequence.
+
+        Todo: ...
+        """
         self._obj = obj
         self._indices = indices
         self._lazy_single_item = lazy_single_item
@@ -40,10 +46,14 @@ class LazySequence(collections.abc.Sequence):
 
         Parameters
         ----------
+        cls: LazySequence
+            the LazySequence class.
         obj: list
             list to create a LazySequence from.
         indices: list, optional
             list of indices to gather from obj. If None, all items in obj are used.
+        lazy_single_item: bool, optional
+            currently unused.
 
         Returns
         -------
@@ -61,6 +71,14 @@ class LazySequence(collections.abc.Sequence):
         return cls([obj], [indices], lazy_single_item=False)
 
     def __getitem__(self, item):
+        """Get item from LazySequence.
+
+        Todo ...
+        """
+        if item == -1:
+            # special case, return last entry
+            return self[len(self) - 1]
+
         indices = utils.item_to_indices(item, self)
         single_item = False
         if isinstance(indices, int):
@@ -90,13 +108,16 @@ class LazySequence(collections.abc.Sequence):
             else lazy_sequence
         )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Return the representation of the LazySequence."""
         return f"{type(self).__name__}({self._obj}, {self._indices})"
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Return the length of the LazySequence."""
         return sum(len(x) for x in self._indices)
 
     def __add__(self, other):
+        """Add two LazySequences."""
         if isinstance(other, LazySequence):
             return self._get_new_instance(
                 self._obj + other._obj,
@@ -109,7 +130,8 @@ class LazySequence(collections.abc.Sequence):
         else:
             raise TypeError("Can only add LazySequence to {LazySequence, list}")
 
-    def tolist(self):
+    def tolist(self) -> list:
+        """Return the LazySequence as a non-lazy list."""
         data = []
         for obj, indices in zip(self._obj, self._indices):
             if isinstance(indices, int):
@@ -159,6 +181,7 @@ def znslice(
         Parameters
         ----------
         self: object
+            the class instance.
         item: int, slice, list, tuple, Reset
             The item to get.
         _resolve: bool, default=False

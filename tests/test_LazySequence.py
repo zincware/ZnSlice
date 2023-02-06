@@ -11,6 +11,7 @@ def test_LazySequenceInit():
     assert lst[0] == 1
     assert lst[[0, 2]].tolist() == [1, 3]
     assert len(lst) == 3
+    assert lst[-1] == 3
 
 
 def test_LazySequence_empty_Init():
