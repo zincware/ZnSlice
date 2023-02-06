@@ -7,7 +7,7 @@ import znslice
 
 def test_version():
     """Test 'ZnTrack' version."""
-    assert znslice.__version__ == "0.1.1"
+    assert znslice.__version__ == "0.1.2"
 
 
 class CacheList(collections.abc.Sequence):
