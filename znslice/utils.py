@@ -30,19 +30,21 @@ def item_to_indices(item, self):
 @item_to_indices.register
 def _(item: int, self) -> int:
     """Keep int as is."""
+    if item < 0:
+        return len(self) + item  # len + (- idx)
     return item
 
 
 @item_to_indices.register
 def _(item: list, self) -> list:
     """Keep list as is."""
-    return item
+    return [item_to_indices(x, self) for x in item]
 
 
 @item_to_indices.register
 def _(item: tuple, self) -> list:
     """Convert tuple to list."""
-    return list(item)
+    return item_to_indices(list(item), self)
 
 
 @item_to_indices.register
