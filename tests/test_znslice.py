@@ -1,5 +1,7 @@
 import collections.abc
 
+import numpy as np
+import numpy.testing as npt
 import pytest
 
 import znslice
@@ -302,3 +304,24 @@ def test_iter_LazyCacheList():
 def test_add_lists():
     lst = LazyCacheList(list(range(10)))[:]
     assert lst + [1, 2, 3] == list(range(10)) + [1, 2, 3]
+
+
+@pytest.mark.parametrize(
+    "item",
+    [slice(2, 4), -1, -2, 1, 2, [1, 2, 3], [-3, -2, -1]],
+)
+def test_against_numpy(item):
+    array = np.random.randn(10)
+    data = LazyCacheList(array)
+
+    npt.assert_array_equal(data[item].tolist(), array[item])
+    concat = data[:5] + data[5:]
+    npt.assert_array_equal(concat[item].tolist(), array[item])
+
+
+def test_unsorted_slice():
+    array = np.random.randn(10)
+    data = LazyCacheList(array)
+    concat = data[:5] + data[5:]
+    with pytest.raises(ValueError):
+        _ = concat[[2, 3, 1]]

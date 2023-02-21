@@ -2,6 +2,27 @@
 import functools
 
 
+def get_matched_indices(selected, available, single_item) -> list:
+    """Get the indices selected from the available indices."""
+    matched_indices = []
+
+    max_index = 0
+
+    for index in available:
+        _indices = [val for idx, val in enumerate(index) if idx + max_index in selected]
+        if single_item and len(_indices) == 1:
+            _indices = _indices[0]
+        max_index += len(index)
+        matched_indices.append(_indices)
+
+    return matched_indices
+
+
+def check_sorted(data: list) -> bool:
+    """Check if data is ordered."""
+    return sorted(data) == data
+
+
 def optional_kwargs_decorator(fn):
     """Decorator to allow optional kwargs."""
 

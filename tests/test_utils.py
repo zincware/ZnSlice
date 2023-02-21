@@ -34,3 +34,35 @@ def test_item_to_indices_np(index):
     npt.assert_array_equal(
         data[znslice.utils.item_to_indices(index, data)], data[index]
     )
+
+
+def test_get_matched_indices():
+    assert znslice.utils.get_matched_indices(
+        selected=[0], available=[[0]], single_item=False
+    ) == [[0]]
+    assert znslice.utils.get_matched_indices(
+        selected=[0], available=[[0]], single_item=True
+    ) == [0]
+    assert znslice.utils.get_matched_indices(
+        selected=[2], available=[[0, 1], [10, 11]], single_item=False
+    ) == [[], [10]]
+    assert znslice.utils.get_matched_indices(
+        selected=[2], available=[[0, 1], [10, 11]], single_item=True
+    ) == [[], 10]
+    # TODO: check if single item has to work like this
+    assert znslice.utils.get_matched_indices(
+        selected=[0, 2], available=[[0, 1], [10, 11]], single_item=True
+    ) == [0, 10]
+    assert znslice.utils.get_matched_indices(
+        selected=[0, 2], available=[[0, 1], [10, 11]], single_item=False
+    ) == [[0], [10]]
+    assert znslice.utils.get_matched_indices(
+        selected=[2, 0], available=[[0, 1], [10, 11]], single_item=False
+    ) == [[0], [10]]
+
+
+def test_check_sorted():
+    assert znslice.utils.check_sorted([1, 2, 3])
+    assert not znslice.utils.check_sorted([2, 5, 1])
+    assert znslice.utils.check_sorted([-3, -2, -1])
+    assert not znslice.utils.check_sorted([-1, -2, -3])
