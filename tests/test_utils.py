@@ -6,7 +6,6 @@ import znslice
 
 
 def test_item_to_indices():
-
     lst = list(range(10))
 
     assert znslice.utils.item_to_indices(1, lst) == 1
@@ -56,9 +55,12 @@ def test_get_matched_indices():
     assert znslice.utils.get_matched_indices(
         selected=[0, 2], available=[[0, 1], [10, 11]], single_item=False
     ) == [[0], [10]]
-    assert znslice.utils.get_matched_indices(
-        selected=[2, 0], available=[[0, 1], [10, 11]], single_item=False
-    ) == [[0], [10]]
+
+    with pytest.raises(ValueError):
+        # TODO this should be possible in the future
+        assert znslice.utils.get_matched_indices(
+            selected=[2, 0], available=[[0, 1], [10, 11]], single_item=False
+        ) == [[0], [10]]
 
 
 def test_check_sorted():

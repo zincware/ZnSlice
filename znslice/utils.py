@@ -4,6 +4,9 @@ import functools
 
 def get_matched_indices(selected, available, single_item) -> list:
     """Get the indices selected from the available indices."""
+    if not check_sorted(selected):
+        raise ValueError("ZnSlice currently only supports sorted indices.")
+
     matched_indices = []
 
     max_index = 0
