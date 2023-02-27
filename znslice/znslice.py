@@ -75,27 +75,16 @@ class LazySequence(collections.abc.Sequence):
 
         Todo ...
         """
-        if item == -1:
-            # special case, return last entry
-            return self[len(self) - 1]
-
         indices = utils.item_to_indices(item, self)
-        single_item = False
-        if isinstance(indices, int):
-            single_item = True
+        single_item = isinstance(indices, int)
+        if single_item:
             indices = [indices]
-        matched_indices = []
+        if not utils.check_sorted(indices):
+            raise ValueError("ZnSlice currently only supports sorted indices.")
 
-        max_index = 0
-
-        for index in self._indices:
-            _indices = [
-                val for idx, val in enumerate(index) if idx + max_index in indices
-            ]
-            if single_item and len(_indices) == 1:
-                _indices = _indices[0]
-            max_index += len(index)
-            matched_indices.append(_indices)
+        matched_indices = utils.get_matched_indices(
+            selected=indices, available=self._indices, single_item=single_item
+        )
 
         if any(x >= len(self) for x in indices):
             raise IndexError("Index out of range")
